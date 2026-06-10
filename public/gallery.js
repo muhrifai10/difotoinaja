@@ -237,7 +237,7 @@ function renderPhotosGrid() {
 
     // Klik untuk membuka Lightbox
     item.addEventListener('click', () => {
-      openLightbox(getAssetUrl(photo.url));
+      openLightbox(photo);
     });
 
     galleryGrid.appendChild(item);
@@ -284,8 +284,9 @@ function setupLightbox() {
   });
 }
 
-function openLightbox(imgUrl) {
-  const photoName = imgUrl.substring(imgUrl.lastIndexOf('/') + 1);
+function openLightbox(photo) {
+  const imgUrl = getAssetUrl(photo.url);
+  const photoName = photo.name;
   activeLightboxPhoto = { url: imgUrl, name: photoName };
 
   lightboxImg.src = imgUrl;
@@ -294,6 +295,34 @@ function openLightbox(imgUrl) {
   
   // Reset container QR di lightbox ke tersembunyi
   lightboxQrContainer.style.display = 'none';
+
+  // Render raw/unframed photos buttons if they exist
+  const rawContainer = document.getElementById('lightbox-raw-container');
+  const rawButtons = document.getElementById('lightbox-raw-buttons');
+  
+  if (rawContainer && rawButtons) {
+    if (Array.isArray(photo.rawPhotos) && photo.rawPhotos.length > 0) {
+      rawButtons.innerHTML = '';
+      photo.rawPhotos.forEach((rawUrl, index) => {
+        const btn = document.createElement('a');
+        btn.href = getAssetUrl(rawUrl);
+        btn.download = rawUrl.substring(rawUrl.lastIndexOf('/') + 1);
+        btn.className = 'btn-secondary';
+        btn.style.padding = '0.45rem 1rem';
+        btn.style.fontSize = '0.82rem';
+        btn.style.borderRadius = '8px';
+        btn.style.textDecoration = 'none';
+        btn.style.display = 'inline-flex';
+        btn.style.alignItems = 'center';
+        btn.style.gap = '4px';
+        btn.innerHTML = `📥 Foto ${index + 1}`;
+        rawButtons.appendChild(btn);
+      });
+      rawContainer.style.display = 'flex';
+    } else {
+      rawContainer.style.display = 'none';
+    }
+  }
 
   lightbox.classList.add('active');
 }

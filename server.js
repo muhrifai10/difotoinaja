@@ -768,15 +768,29 @@ app.get('/api/event/:slug/photos', (req, res) => {
       return res.status(500).json({ error: 'Gagal memuat galeri.' });
     }
 
-    // Filter file gambar saja dan urutkan berdasarkan yang terbaru
-    const photos = files
-      .filter(file => ['.png', '.jpg', '.jpeg'].includes(path.extname(file).toLowerCase()))
-      .map(file => ({
+    // Filter file gambar saja, pisahkan antara kolase dan foto asli
+    const allFiles = files.filter(file => ['.png', '.jpg', '.jpeg'].includes(path.extname(file).toLowerCase()));
+    
+    const collages = allFiles.filter(file => !file.includes('_raw_'));
+    const raws = allFiles.filter(file => file.includes('_raw_'));
+
+    const photos = collages.map(file => {
+      const ext = path.extname(file);
+      const baseName = path.basename(file, ext);
+      
+      const matchedRaws = raws
+        .filter(rawFile => rawFile.startsWith(`${baseName}_raw_`))
+        .map(rawFile => `/uploads/events/${slug}/${rawFile}`)
+        .sort(); // Urutkan agar raw_1, raw_2, raw_3 berurutan sesuai indeksnya
+
+      return {
         name: file,
         url: `/uploads/events/${slug}/${file}`,
+        rawPhotos: matchedRaws,
         time: fs.statSync(path.join(eventDir, file)).mtimeMs
-      }))
-      .sort((a, b) => b.time - a.time);
+      };
+    })
+    .sort((a, b) => b.time - a.time);
 
     res.json(photos);
   });
