@@ -2,7 +2,10 @@
 <html lang="id" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Difotoinaja">
   <title>Galeri Foto Event — Difotoinaja</title>
   <meta name="description" content="Lihat dan unduh hasil foto kolase dari event Difotoinaja Photo Booth secara gratis.">
   <link rel="stylesheet" href="/style.css?v=2.8.8">
@@ -37,11 +40,11 @@
     <!-- Gallery Event Selection -->
     <section id="gallery-select-section" class="hero-section" style="display: none;">
       <p class="section-label" style="margin-bottom: 0.75rem;">🖼️ Galeri Publik</p>
-      <h1 style="font-size: 2.8rem; margin-bottom: 1rem; background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Koleksi Foto Event</h1>
-      <p style="color: var(--text-secondary); max-width: 520px; margin-bottom: 2.5rem; font-size: 1rem; line-height: 1.7;">Pilih salah satu event di bawah ini untuk melihat dan mengunduh kenangan Anda secara gratis.</p>
+      <h1 style="font-size: 1.8rem; margin-bottom: 0.75rem; background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Koleksi Foto Event</h1>
+      <p style="color: var(--text-secondary); max-width: 520px; margin-bottom: 1.75rem; font-size: 0.95rem; line-height: 1.6;">Pilih salah satu event di bawah ini untuk melihat dan mengunduh kenangan Anda secara gratis.</p>
 
       <div class="event-selector-card glass-panel" style="max-width: 580px;">
-        <h2 style="margin-bottom: 1.25rem; text-align: center; font-size: 1.3rem;">Pilih Galeri Event</h2>
+        <h2 style="margin-bottom: 1rem; text-align: center; font-size: 1.15rem;">Pilih Galeri Event</h2>
         <div id="gallery-events-list" style="display: flex; flex-direction: column; gap: 12px;">
           <!-- Daftar event dimuat dinamis -->
         </div>
@@ -52,12 +55,12 @@
     <section id="gallery-content-section" style="display: none;">
       <div class="gallery-header glass-panel" style="position: relative; overflow: hidden;">
         <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gradient-cyan);"></div>
-        <h1 id="gallery-title" style="font-size: 2.4rem; margin-bottom: 0.4rem; background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Galeri Event</h1>
-        <p id="gallery-date" style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Tanggal: -</p>
+        <h1 id="gallery-title" style="font-size: 1.6rem; margin-bottom: 0.2rem; background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Galeri Event</h1>
+        <p id="gallery-date" style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1rem;">Tanggal: -</p>
 
         <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
-          <a href="/" class="btn-primary" style="padding: 0.75rem 1.75rem; font-size: 0.92rem;">📸 Ambil Foto Baru</a>
-          <button id="btn-download-all" class="btn-secondary" style="padding: 0.75rem 1.75rem; font-size: 0.92rem;">📦 Unduh Semua (ZIP)</button>
+          <a href="/" class="btn-primary" style="padding: 0.5rem 1.25rem; font-size: 0.82rem;">📸 Ambil Foto Baru</a>
+          <button id="btn-download-all" class="btn-secondary" style="padding: 0.5rem 1.25rem; font-size: 0.82rem;">📦 Unduh Semua (ZIP)</button>
         </div>
       </div>
 
