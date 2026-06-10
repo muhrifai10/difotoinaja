@@ -665,7 +665,7 @@ app.delete('/api/templates/:id', verifyAdminPin, (req, res) => {
 
 // 4. API Upload Hasil Foto Sesi (Canvas Capture)
 app.post('/api/upload', (req, res) => {
-  const { image, eventSlug } = req.body;
+  const { image, rawImages, eventSlug } = req.body;
   if (!image) return res.status(400).json({ error: 'Gambar tidak ditemukan' });
 
   // Cari event
@@ -682,7 +682,8 @@ app.post('/api/upload', (req, res) => {
   const isJpeg = image.startsWith('data:image/jpeg');
   const base64Data = image.replace(/^data:image\/(png|jpeg);base64,/, "");
   const extension = isJpeg ? 'jpg' : 'png';
-  const fileName = `session_${Date.now()}.${extension}`;
+  const timestamp = Date.now();
+  const fileName = `session_${timestamp}.${extension}`;
   const filePath = path.join(eventDir, fileName);
 
   fs.writeFile(filePath, base64Data, 'base64', async (err) => {
@@ -695,6 +696,37 @@ app.post('/api/upload', (req, res) => {
     const photoUrl = `${req.protocol}://${req.get('host')}/uploads/events/${targetEvent.slug}/${fileName}`;
 
     try {
+      // Simpan foto asli (tanpa frame) jika dilampirkan
+      if (Array.isArray(rawImages) && rawImages.length > 0) {
+        rawImages.forEach((rawImgData, idx) => {
+          if (!rawImgData) return;
+          try {
+            const match = rawImgData.match(/^data:image\/([a-zA-Z0-9+.-]+);base64,/);
+            const rawMime = match ? match[1] : 'jpeg';
+            const rawBase64 = rawImgData.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, "");
+            const rawExt = (rawMime === 'png') ? 'png' : 'jpg';
+            const rawFileName = `session_${timestamp}_raw_${idx + 1}.${rawExt}`;
+            const rawFilePath = path.join(eventDir, rawFileName);
+            
+            fs.writeFileSync(rawFilePath, rawBase64, 'base64');
+            console.log(`[Raw Photo] Berhasil menyimpan foto asli ke ${rawFilePath}`);
+
+            // Integrasi Google Drive untuk foto asli
+            if (config.googleDriveEnabled && config.googleDriveClientEmail && config.googleDrivePrivateKey) {
+              console.log(`[Drive Integration] Mengunggah foto asli ${rawFileName} ke Google Drive`);
+              uploadToGoogleDrive(rawFilePath, config.googleDriveFolderId, {
+                clientEmail: config.googleDriveClientEmail,
+                privateKey: config.googleDrivePrivateKey
+              }).catch(err => {
+                console.error(`[Drive Integration] Gagal mengunggah foto asli ke Google Drive:`, err.message);
+              });
+            }
+          } catch (rawErr) {
+            console.error(`[Raw Photo] Gagal menyimpan foto asli ke-${idx + 1}:`, rawErr);
+          }
+        });
+      }
+
       // Generate QR Code untuk download langsung
       const qrDataUrl = await qrcode.toDataURL(photoUrl);
 
@@ -708,7 +740,6 @@ app.post('/api/upload', (req, res) => {
           console.error(`[Drive Integration] Gagal mengunggah ke Google Drive:`, err.message);
         });
       }
-
 
       res.json({
         success: true,

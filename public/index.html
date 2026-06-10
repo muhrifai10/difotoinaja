@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Difotoinaja">
   <title>Difotoinaja — Photo Booth Profesional</title>
   <meta name="description" content="Difotoinaja: Solusi photo booth profesional. Pilih template, ambil foto, dan dapatkan kolase instan berkualitas tinggi.">
-  <link rel="stylesheet" href="/style.css?v=2.8.8">
+  <link rel="stylesheet" href="/style.css?v=2.8.9">
 </head>
 <body class="booth-body">
 
@@ -145,7 +145,14 @@
 
         <!-- Camera Viewport -->
         <div class="camera-viewport">
+          <div id="booth-capture-progress" class="capture-progress-badge">Foto 0 / 0</div>
           <video id="webcam-preview" class="camera-video" autoplay playsinline></video>
+          <img id="dslr-preview" class="camera-video" style="display: none; object-fit: cover;" alt="Pratinjau Foto DSLR">
+          <div id="dslr-capture-instruction-overlay" class="dslr-instruction-overlay" style="display: none;">
+            <div class="dslr-instruction-icon">📸</div>
+            <h3>Mode DSLR Tethering Aktif</h3>
+            <p>Silakan ambil foto menggunakan tombol shutter di kamera DSLR Anda. Hasil foto akan muncul otomatis di sini.</p>
+          </div>
           <div id="countdown-overlay" class="countdown-overlay">3</div>
           <div id="flash-overlay" class="flash-overlay"></div>
         </div>
@@ -240,7 +247,7 @@
     &copy; 2026 Difotoinaja &mdash; Didukung oleh Antigravity.
   </footer>
 
-  <script src="/theme.js?v=2.8.8"></script>
-  <script src="/app.js?v=2.8.8"></script>
+  <script src="/theme.js?v=2.8.9"></script>
+  <script src="/app.js?v=2.8.9"></script>
 </body>
 </html>

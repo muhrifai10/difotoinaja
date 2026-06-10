@@ -74,6 +74,8 @@ const requiredCount = document.getElementById('required-count');
 
 const countdownOverlay = document.getElementById('countdown-overlay');
 const flashOverlay = document.getElementById('flash-overlay');
+const dslrPreview = document.getElementById('dslr-preview');
+const dslrCaptureInstructionOverlay = document.getElementById('dslr-capture-instruction-overlay');
 
 const collageCanvas = document.getElementById('collage-canvas');
 const collagePreview = document.getElementById('collage-preview');
@@ -533,6 +535,11 @@ function initBoothUI() {
   
   capturedCount.textContent = '0';
   requiredCount.textContent = state.activeTemplate.photoSlots.length;
+  
+  const progressBadge = document.getElementById('booth-capture-progress');
+  if (progressBadge) {
+    progressBadge.textContent = `Foto 0 / ${state.activeTemplate.photoSlots.length}`;
+  }
 
   // Tampilkan preview desain frame terpilih di sidebar secara dinamis
   updateSidebarPreview();
@@ -563,6 +570,10 @@ function initBoothUI() {
       state.stream = null;
     }
     btnCapture.style.display = 'none'; // Dipicu dari kamera DSLR langsung
+    
+    // Reset/Tampilkan overlay instruksi DSLR dan sembunyikan preview foto DSLR lama
+    if (dslrCaptureInstructionOverlay) dslrCaptureInstructionOverlay.style.display = 'flex';
+    if (dslrPreview) dslrPreview.style.display = 'none';
   } else {
     // Mode Browser Webcam
     cameraSourceContainer.style.display = 'block';
@@ -570,6 +581,10 @@ function initBoothUI() {
     dslrInstructions.style.display = 'none';
     webcamPreview.style.display = 'block';
     btnCapture.style.display = 'inline-flex';
+    
+    // Sembunyikan overlay instruksi DSLR dan preview DSLR
+    if (dslrCaptureInstructionOverlay) dslrCaptureInstructionOverlay.style.display = 'none';
+    if (dslrPreview) dslrPreview.style.display = 'none';
 
     initWebcamDevices();
   }
@@ -847,6 +862,22 @@ function addCapturedPhoto(slotIndex, dataUrl) {
 
   capturedCount.textContent = state.capturedPhotos.length;
 
+  const progressBadge = document.getElementById('booth-capture-progress');
+  if (progressBadge) {
+    progressBadge.textContent = `Foto ${state.capturedPhotos.length} / ${state.activeTemplate.photoSlots.length}`;
+  }
+
+  // Jika mode DSLR aktif, perbarui preview fullscreen DSLR
+  if (state.isDslrMode) {
+    if (dslrPreview) {
+      dslrPreview.src = dataUrl;
+      dslrPreview.style.display = 'block';
+    }
+    if (dslrCaptureInstructionOverlay) {
+      dslrCaptureInstructionOverlay.style.display = 'none';
+    }
+  }
+
   // Update pratinjau frame template di sidebar secara real-time
   updateSidebarPreview();
 }
@@ -1011,6 +1042,7 @@ async function uploadCollage(dataUrl) {
       },
       body: JSON.stringify({
         image: dataUrl,
+        rawImages: state.capturedPhotos,
         eventSlug: state.activeEvent.slug
       })
     });
