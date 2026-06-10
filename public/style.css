@@ -936,7 +936,7 @@ nav {
   gap: 1.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .admin-grid { grid-template-columns: 1fr; }
 }
 
@@ -1671,7 +1671,7 @@ body.booth-body footer { display: none; }
 }
 
 /* ===== FLOATING SHARE BAR ===== */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   #floating-share-bar {
     flex-direction: column !important;
     gap: 12px;
@@ -1704,7 +1704,7 @@ body.booth-body footer { display: none; }
 }
 
 /* ===== MOBILE RESPONSIVENESS ===== */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   /* Scroll & Height Overrides */
   body.booth-body,
   body.gallery-body {
@@ -1903,83 +1903,6 @@ body.booth-body footer { display: none; }
     width: 100% !important;
     justify-content: center !important;
     padding: 0.75rem 1.5rem !important;
-  }
-
-  /* Screen 2: Capture Layout (Booth Camera) */
-  body.booth-body .booth-layout {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1rem !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  body.booth-body .camera-panel {
-    width: 100% !important;
-    height: auto !important;
-    padding: 0.85rem !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
-  }
-
-  body.booth-body .camera-viewport {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: auto !important;
-    max-height: none !important;
-    aspect-ratio: 4/3 !important;
-    margin-bottom: 0.85rem !important;
-  }
-
-  body.booth-body #webcam-preview {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-
-  body.booth-body .sidebar-panel {
-    width: 100% !important;
-    height: auto !important;
-    padding: 1rem !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
-  }
-
-  body.booth-body .sidebar-frame-preview-box {
-    min-height: auto !important;
-    height: 200px !important;
-  }
-
-  /* Screen 3: Result Layout */
-  body.booth-body .result-layout {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 1.25rem !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  body.booth-body .result-canvas-container {
-    width: 100% !important;
-    max-width: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-  }
-
-  body.booth-body .result-canvas-preview {
-    max-height: none !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    height: auto !important;
-    border-radius: var(--border-radius-md) !important;
-  }
-
-  body.booth-body .result-actions-panel {
-    width: 100% !important;
-    height: auto !important;
-    padding: 1.25rem 1rem 3.5rem 1rem !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
   }
 
   .qr-container {
@@ -2419,7 +2342,7 @@ footer {
   transform: none !important;
 }
 
-/* ===== MOBILE SCROLL FIX ===== */
+/* ===== MOBILE SCROLL FIX & GRID STACKING ===== */
 @media (max-width: 968px) {
   body.booth-body,
   body.gallery-body {
@@ -2448,6 +2371,7 @@ footer {
     overflow: visible !important;
   }
 
+  /* Screen 2: Capture Layout (Booth Camera) - Stacked Vertically */
   body.booth-body .booth-layout {
     height: auto !important;
     display: flex !important;
@@ -2456,21 +2380,43 @@ footer {
     overflow: visible !important;
   }
 
-  body.booth-body .camera-panel,
-  body.booth-body .sidebar-panel {
+  body.booth-body .camera-panel {
+    width: 100% !important;
     height: auto !important;
-    min-height: 0 !important;
+    padding: 0.85rem !important;
+    box-sizing: border-box !important;
     overflow: visible !important;
   }
 
   body.booth-body .camera-viewport {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
     max-height: none !important;
+    aspect-ratio: 4/3 !important;
+    margin-bottom: 0.85rem !important;
+  }
+
+  body.booth-body #webcam-preview {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  body.booth-body .sidebar-panel {
+    width: 100% !important;
+    height: auto !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
   }
 
   body.booth-body .sidebar-frame-preview-box {
     min-height: auto !important;
+    height: 200px !important;
   }
 
+  /* Screen 3: Result Layout - Stacked Vertically */
   body.booth-body .result-layout {
     height: auto !important;
     display: flex !important;
@@ -2479,15 +2425,25 @@ footer {
     overflow: visible !important;
   }
 
+  body.booth-body .result-canvas-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
   body.booth-body .result-canvas-preview {
     max-height: none !important;
     width: 100% !important;
     height: auto !important;
+    border-radius: var(--border-radius-md) !important;
   }
 
   body.booth-body .result-actions-panel {
+    width: 100% !important;
     height: auto !important;
-    min-height: 0 !important;
+    padding: 1.25rem 1rem 3.5rem 1rem !important;
+    box-sizing: border-box !important;
     overflow: visible !important;
   }
 
@@ -2502,4 +2458,31 @@ footer {
     overflow-y: visible !important;
   }
 }
+
+/* ===== HEIGHT-BASED RESPONSIVENESS ===== */
+/* Enable scrolling if screen height is too small to fit the full 2-column layout */
+@media (max-height: 850px) {
+  body.booth-body,
+  body.gallery-body {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    overflow: auto !important;
+  }
+
+  body.booth-body .container,
+  body.gallery-body .container {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body #screen-home,
+  body.booth-body #screen-booth,
+  body.booth-body #screen-result {
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
 
