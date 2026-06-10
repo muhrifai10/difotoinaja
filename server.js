@@ -768,29 +768,74 @@ app.get('/api/event/:slug/photos', (req, res) => {
       return res.status(500).json({ error: 'Gagal memuat galeri.' });
     }
 
-    // Filter file gambar saja, pisahkan antara kolase dan foto asli
     const allFiles = files.filter(file => ['.png', '.jpg', '.jpeg'].includes(path.extname(file).toLowerCase()));
     
+    // Helper untuk mem-parsing timestamp sesi dari nama file (format: session_1234567890)
+    const getSessionTimestamp = (fileName) => {
+      const match = fileName.match(/session_(\d+)/);
+      return match ? parseInt(match[1]) : 0;
+    };
+
     const collages = allFiles.filter(file => !file.includes('_raw_'));
     const raws = allFiles.filter(file => file.includes('_raw_'));
 
-    const photos = collages.map(file => {
+    // Buat lookup map untuk rawPhotos per collage
+    const rawLookup = {};
+    collages.forEach(file => {
       const ext = path.extname(file);
       const baseName = path.basename(file, ext);
-      
-      const matchedRaws = raws
+      const matched = raws
         .filter(rawFile => rawFile.startsWith(`${baseName}_raw_`))
         .map(rawFile => `/uploads/events/${slug}/${rawFile}`)
-        .sort(); // Urutkan agar raw_1, raw_2, raw_3 berurutan sesuai indeksnya
+        .sort((x, y) => {
+          const matchX = x.match(/_raw_(\d+)/);
+          const matchY = y.match(/_raw_(\d+)/);
+          const idxX = matchX ? parseInt(matchX[1]) : 0;
+          const idxY = matchY ? parseInt(matchY[1]) : 0;
+          return idxX - idxY;
+        });
+      rawLookup[baseName] = matched;
+    });
+
+    const photos = allFiles.map(file => {
+      const ext = path.extname(file);
+      const baseName = path.basename(file, ext);
+      const timestamp = getSessionTimestamp(file);
+      const isRaw = file.includes('_raw_');
+      let rawIndex = 999;
+      if (isRaw) {
+        const match = file.match(/_raw_(\d+)/);
+        rawIndex = match ? parseInt(match[1]) : 999;
+      }
+      
+      // Cari collage base name untuk mengaitkan rawPhotos
+      let collageBase = baseName;
+      if (isRaw) {
+        collageBase = baseName.split('_raw_')[0];
+      }
 
       return {
         name: file,
         url: `/uploads/events/${slug}/${file}`,
-        rawPhotos: matchedRaws,
+        isRaw: isRaw,
+        rawIndex: rawIndex,
+        timestamp: timestamp,
+        rawPhotos: rawLookup[collageBase] || [],
         time: fs.statSync(path.join(eventDir, file)).mtimeMs
       };
     })
-    .sort((a, b) => b.time - a.time);
+    .sort((a, b) => {
+      // 1. Urutkan berdasarkan timestamp sesi secara menurun (sesi terbaru di atas)
+      if (b.timestamp !== a.timestamp) {
+        return b.timestamp - a.timestamp;
+      }
+      // 2. Dalam sesi yang sama, kolase utama (isRaw = false) harus muncul pertama
+      if (a.isRaw !== b.isRaw) {
+        return a.isRaw ? 1 : -1;
+      }
+      // 3. Jika sama-sama foto mentah/raw, urutkan berdasarkan indeks (raw_1, raw_2, raw_3) secara menaik
+      return a.rawIndex - b.rawIndex;
+    });
 
     res.json(photos);
   });

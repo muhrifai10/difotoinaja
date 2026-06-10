@@ -301,7 +301,7 @@ function openLightbox(photo) {
   const rawButtons = document.getElementById('lightbox-raw-buttons');
   
   if (rawContainer && rawButtons) {
-    if (Array.isArray(photo.rawPhotos) && photo.rawPhotos.length > 0) {
+    if (!photo.isRaw && Array.isArray(photo.rawPhotos) && photo.rawPhotos.length > 0) {
       rawButtons.innerHTML = '';
       photo.rawPhotos.forEach((rawUrl, index) => {
         const btn = document.createElement('a');
