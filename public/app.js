@@ -584,6 +584,7 @@ function updateSidebarPreview() {
   // Load overlay image
   const overlayPromise = new Promise((resolve) => {
     const img = new Image();
+    img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
     img.src = `${getAssetUrl(template.overlayUrl)}?t=${Date.now()}`;
@@ -880,6 +881,7 @@ function drawCollageCanvas() {
   // Load overlay image
   const overlayPromise = new Promise((resolve) => {
     const img = new Image();
+    img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
     img.src = `${getAssetUrl(template.overlayUrl)}?t=${Date.now()}`;
@@ -932,7 +934,8 @@ function drawCollageCanvas() {
     }
 
     // Tampilkan di tag img untuk preview
-    const finalDataUrl = collageCanvas.toDataURL('image/png');
+    // Menggunakan JPEG 90% (image/jpeg) agar ukuran file jauh lebih kecil dan proses upload/rendering instan
+    const finalDataUrl = collageCanvas.toDataURL('image/jpeg', 0.90);
     collagePreview.src = finalDataUrl;
     
     // Langsung unggah hasil foto ke server untuk generate QR Code

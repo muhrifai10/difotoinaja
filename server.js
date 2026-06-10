@@ -679,8 +679,10 @@ app.post('/api/upload', (req, res) => {
   }
 
   // Bersihkan data URL (base64)
-  const base64Data = image.replace(/^data:image\/png;base64,/, "");
-  const fileName = `session_${Date.now()}.png`;
+  const isJpeg = image.startsWith('data:image/jpeg');
+  const base64Data = image.replace(/^data:image\/(png|jpeg);base64,/, "");
+  const extension = isJpeg ? 'jpg' : 'png';
+  const fileName = `session_${Date.now()}.${extension}`;
   const filePath = path.join(eventDir, fileName);
 
   fs.writeFile(filePath, base64Data, 'base64', async (err) => {
