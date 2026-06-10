@@ -1705,20 +1705,288 @@ body.booth-body footer { display: none; }
 
 /* ===== MOBILE RESPONSIVENESS ===== */
 @media (max-width: 768px) {
+  /* Scroll & Height Overrides */
+  body.booth-body,
+  body.gallery-body {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    overflow: auto !important;
+  }
+
+  body.booth-body .container,
+  body.gallery-body .container {
+    margin-top: 8rem !important; /* Pushed down for header and timer */
+    padding: 0 0.85rem !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body #screen-home,
+  body.booth-body #screen-booth,
+  body.booth-body #screen-result {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Navigation Bar Cleanup */
   nav {
-    width: calc(100% - 1.25rem) !important;
+    width: calc(100% - 1rem) !important;
     top: 0.5rem !important;
-    padding: 0.6rem 1rem !important;
+    padding: 0.55rem 0.75rem !important;
+    border-radius: var(--border-radius-md) !important;
+    height: auto !important;
+  }
+
+  .logo {
+    font-size: 1.15rem !important;
+    letter-spacing: 0px !important;
+    white-space: nowrap !important;
+    gap: 4px !important;
+  }
+  
+  .logo span {
+    display: inline !important;
+  }
+
+  .nav-right {
+    gap: 0.35rem !important;
+  }
+
+  .nav-links {
+    gap: 0.25rem !important;
+  }
+
+  .nav-btn {
+    font-size: 0.75rem !important;
+    padding: 0.35rem 0.55rem !important;
+  }
+
+  /* Hide fullscreen button on mobile since it is not compatible/needed */
+  #btn-fullscreen-toggle {
+    display: none !important;
+  }
+
+  .theme-toggle {
+    width: 48px !important;
+    height: 26px !important;
+    flex-shrink: 0;
+  }
+  .theme-toggle-track {
+    width: 48px !important;
+    height: 26px !important;
+  }
+  .theme-toggle-thumb {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  [data-theme="light"] .theme-toggle-thumb {
+    transform: translateX(22px) !important;
+  }
+
+  /* Floating Timer Status Bar under Header */
+  #session-timer-container {
+    position: fixed !important;
+    top: 4.4rem !important;
+    left: 0.5rem !important;
+    right: 0.5rem !important;
+    width: calc(100% - 1rem) !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 8px !important;
+    z-index: 999 !important;
+    background: rgba(10, 11, 20, 0.8) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1.5px solid var(--glass-border) !important;
+    border-radius: var(--border-radius-md) !important;
+    padding: 0.45rem 0.75rem !important;
+    box-sizing: border-box !important;
+  }
+
+  #session-timer-container .session-timer-badge {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    font-size: 0.8rem !important;
+    margin: 0 !important;
+  }
+
+  #session-timer-container #btn-end-session {
+    margin: 0 !important;
+    padding: 0.38rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+  }
+
+  /* Wizard Steps Responsive Design */
+  .wizard-steps-container {
+    margin-bottom: 1rem !important;
+    padding: 0.65rem 0.85rem !important;
+  }
+
+  .wizard-steps {
+    justify-content: center !important;
+    gap: 6px !important;
+  }
+
+  .wizard-step {
+    font-size: 0.8rem !important;
+    gap: 6px !important;
+  }
+
+  .wizard-step .step-num {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 0.75rem !important;
+    border-width: 1.5px !important;
+  }
+
+  /* Hide labels of inactive steps to prevent overflow, only show active one */
+  .wizard-step .step-label {
+    display: none !important;
+  }
+  
+  .wizard-step.active .step-label {
+    display: inline-block !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+
+  .step-divider {
+    margin: 0 0.25rem !important;
+    max-width: 30px !important;
+  }
+
+  /* Screen 1: Event Selector Card */
+  body.booth-body .event-selector-card {
+    height: auto !important;
+    overflow: visible !important;
+    padding: 1.25rem 0.95rem !important;
+  }
+
+  body.booth-body .templates-select-grid {
+    flex: none !important;
+    height: auto !important;
+    min-height: 240px !important;
+    overflow-x: auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    padding-bottom: 10px !important;
+    scrollbar-width: thin !important;
+  }
+
+  body.booth-body .booth-nav-controls {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  body.booth-body #btn-home-next {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.75rem 1.5rem !important;
+  }
+
+  /* Screen 2: Capture Layout (Booth Camera) */
+  body.booth-body .booth-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .camera-panel {
+    width: 100% !important;
+    height: auto !important;
+    padding: 0.85rem !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .camera-viewport {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 4/3 !important;
+    margin-bottom: 0.85rem !important;
+  }
+
+  body.booth-body #webcam-preview {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  body.booth-body .sidebar-panel {
+    width: 100% !important;
+    height: auto !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .sidebar-frame-preview-box {
+    min-height: auto !important;
+    height: 200px !important;
+  }
+
+  /* Screen 3: Result Layout */
+  body.booth-body .result-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .result-canvas-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  body.booth-body .result-canvas-preview {
+    max-height: none !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
     border-radius: var(--border-radius-md) !important;
   }
 
-  .logo { font-size: 1.25rem !important; letter-spacing: 0.5px !important; }
-  .nav-links { gap: 0.25rem !important; }
-  .nav-btn { font-size: 0.75rem !important; padding: 0.35rem 0.6rem !important; }
+  body.booth-body .result-actions-panel {
+    width: 100% !important;
+    height: auto !important;
+    padding: 1.25rem 1rem !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
 
-  .container { margin-top: 6rem !important; padding: 0 1rem !important; }
+  /* Gallery Overrides */
+  body.gallery-body #gallery-select-section,
+  body.gallery-body #gallery-content-section {
+    height: auto !important;
+    overflow: visible !important;
+  }
 
-  .gallery-header { padding: 1.5rem 1rem !important; margin-bottom: 1.5rem !important; }
+  body.gallery-body .gallery-grid {
+    height: auto !important;
+    overflow-y: visible !important;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+    gap: 0.85rem !important;
+  }
+
+  .gallery-header { padding: 1.25rem 1rem !important; margin-bottom: 1.25rem !important; }
   #gallery-title { font-size: 1.6rem !important; }
   #gallery-date { font-size: 0.88rem !important; }
 
@@ -1740,10 +2008,6 @@ body.booth-body footer { display: none; }
   #share-banner div { flex-direction: column !important; text-align: center !important; gap: 7px !important; }
   #share-banner button { width: 100% !important; justify-content: center !important; margin: 0 !important; }
 
-  .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
-    gap: 0.85rem !important;
-  }
   .gallery-item { border-radius: var(--border-radius-md) !important; }
   .gallery-item-select { top: 8px !important; right: 8px !important; width: 28px !important; height: 28px !important; }
   .gallery-item-select .check-mark { font-size: 0.8rem !important; }
@@ -1783,12 +2047,12 @@ body.booth-body footer { display: none; }
 
 @media (max-width: 480px) {
   .gallery-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.7rem !important; }
-  .nav-btn { font-size: 0.68rem !important; padding: 0.28rem 0.45rem !important; }
+  .nav-btn { font-size: 0.68rem !important; padding: 0.25rem 0.4rem !important; }
   .logo { font-size: 1rem !important; }
-  .theme-toggle { width: 52px !important; height: 28px !important; }
-  .theme-toggle-track { width: 52px !important; height: 28px !important; }
-  .theme-toggle-thumb { width: 20px !important; height: 20px !important; }
-  [data-theme="light"] .theme-toggle-thumb { transform: translateX(24px) !important; }
+  .theme-toggle { width: 44px !important; height: 24px !important; }
+  .theme-toggle-track { width: 44px !important; height: 24px !important; }
+  .theme-toggle-thumb { width: 16px !important; height: 16px !important; }
+  [data-theme="light"] .theme-toggle-thumb { transform: translateX(20px) !important; }
 }
 
 /* ===== SECTION HEADERS ===== */
