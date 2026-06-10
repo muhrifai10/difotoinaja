@@ -1,5 +1,5 @@
 // Konfigurasi URL Backend (Kosongkan jika dihosting dalam satu server yang sama, misalnya: "https://difotoinaja-backend.onrender.com")
-const BACKEND_URL = ""; 
+const BACKEND_URL = "https://difotoinaja-production.up.railway.app";
 
 function getApiUrl(path) {
   if (!BACKEND_URL) return path;
