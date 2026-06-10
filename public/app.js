@@ -1013,7 +1013,7 @@ async function uploadCollage(dataUrl) {
     if (result.success) {
       state.uploadedPhotoUrl = result.photoUrl;
       qrLoading.style.display = 'none';
-      qrResultContainer.style.display = 'block';
+      qrResultContainer.style.display = 'flex';
       qrImage.src = result.qrCode;
       btnDownloadDirect.href = result.photoUrl;
       
