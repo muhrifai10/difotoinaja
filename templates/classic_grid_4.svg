@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1800" width="1200" height="1800">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b" />
+      <stop offset="100%" stop-color="#09090b" />
+    </linearGradient>
+    
+    <!-- Gold Gradient -->
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#bf953f" />
+      <stop offset="25%" stop-color="#fcf6ba" />
+      <stop offset="50%" stop-color="#b38728" />
+      <stop offset="75%" stop-color="#fbf5b7" />
+      <stop offset="100%" stop-color="#aa771c" />
+    </linearGradient>
+  </defs>
+
+  <!-- Solid Background with Holes Cut Out using EvenOdd fill rule -->
+  <!-- Outer Rect: M0,0 H1200 V1800 H0 Z -->
+  <!-- Inner Slot 1: M80,100 H560 V460 H80 Z -->
+  <!-- Inner Slot 2: M640,100 H1120 V460 H640 Z -->
+  <!-- Inner Slot 3: M80,560 H560 V920 H80 Z -->
+  <!-- Inner Slot 4: M640,560 H1120 V920 H640 Z -->
+  <path d="M 0 0 h 1200 v 1800 h -1200 z 
+           M 80 100 h 480 v 360 h -480 z 
+           M 640 100 h 480 v 360 h -480 z 
+           M 80 560 h 480 v 360 h -480 z 
+           M 640 560 h 480 v 360 h -480 z" 
+        fill="url(#bgGrad)" 
+        fill-rule="evenodd" />
+
+  <!-- Borders around the Photo Slots -->
+  <rect x="76" y="96" width="488" height="368" rx="12" fill="none" stroke="url(#gold)" stroke-width="6" />
+  <rect x="636" y="96" width="488" height="368" rx="12" fill="none" stroke="url(#gold)" stroke-width="6" />
+  <rect x="76" y="556" width="488" height="368" rx="12" fill="none" stroke="url(#gold)" stroke-width="6" />
+  <rect x="636" y="556" width="488" height="368" rx="12" fill="none" stroke="url(#gold)" stroke-width="6" />
+
+  <!-- Branding/Decorative Elements at the bottom -->
+  <g transform="translate(600, 1380)" text-anchor="middle">
+    <!-- Decorative Flourish -->
+    <path d="M -150,0 Q 0,-30 150,0 Q 0,30 -150,0 Z" fill="url(#gold)" opacity="0.3" />
+    
+    <!-- Title Text -->
+    <text y="60" font-family="'Outfit', 'Inter', sans-serif" font-weight="900" font-size="54" fill="url(#gold)" letter-spacing="8">CELEBRATION</text>
+    
+    <!-- Subtitle Text -->
+    <text y="120" font-family="'Inter', sans-serif" font-weight="300" font-size="24" fill="#a1a1aa" letter-spacing="10">SHINE LIKE GOLD</text>
+    
+    <!-- Star Deco -->
+    <polygon points="0,170 8,185 25,185 12,195 17,212 0,200 -17,212 -12,195 -25,185 -8,185" fill="url(#gold)" />
+  </g>
+</svg>

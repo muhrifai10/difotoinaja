@@ -1,0 +1,18 @@
+[
+  {
+    "id": "demo_event_id",
+    "name": "Demo Photobooth Event",
+    "slug": "demo",
+    "date": "2026-06-09",
+    "templateId": "classic_strip_3",
+    "active": false
+  },
+  {
+    "id": "event_1781003312952",
+    "name": "WISUDA",
+    "slug": "wisudadqs",
+    "date": "2026-06-09",
+    "templateId": "classic_strip_3",
+    "active": true
+  }
+]

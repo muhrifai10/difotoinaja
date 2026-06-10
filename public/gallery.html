@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeri Foto Event — Difotoinaja</title>
+  <meta name="description" content="Lihat dan unduh hasil foto kolase dari event Difotoinaja Photo Booth secara gratis.">
+  <link rel="stylesheet" href="/style.css?v=2.8.8">
+</head>
+<body class="gallery-body">
+
+  <!-- Navigation Bar -->
+  <nav class="glass-panel">
+    <div class="logo">
+      ✨ DIFOTOIN<span>AJA</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/" class="nav-btn">Booth</a>
+        <a href="/gallery.html" class="nav-btn active">Galeri</a>
+        <a href="/admin.html" class="nav-btn">Admin</a>
+        <button id="btn-fullscreen-toggle" class="nav-btn" style="border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Layar Penuh">📺 Fullscreen</button>
+      </div>
+      <!-- Dark / Light Toggle -->
+      <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Ganti tema">
+        <div class="theme-toggle-track">
+          <span class="theme-toggle-icon moon">🌙</span>
+          <span class="theme-toggle-icon sun">☀️</span>
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- Gallery Event Selection -->
+    <section id="gallery-select-section" class="hero-section" style="display: none;">
+      <p class="section-label" style="margin-bottom: 0.75rem;">🖼️ Galeri Publik</p>
+      <h1 style="font-size: 2.8rem; margin-bottom: 1rem; background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Koleksi Foto Event</h1>
+      <p style="color: var(--text-secondary); max-width: 520px; margin-bottom: 2.5rem; font-size: 1rem; line-height: 1.7;">Pilih salah satu event di bawah ini untuk melihat dan mengunduh kenangan Anda secara gratis.</p>
+
+      <div class="event-selector-card glass-panel" style="max-width: 580px;">
+        <h2 style="margin-bottom: 1.25rem; text-align: center; font-size: 1.3rem;">Pilih Galeri Event</h2>
+        <div id="gallery-events-list" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Daftar event dimuat dinamis -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Content -->
+    <section id="gallery-content-section" style="display: none;">
+      <div class="gallery-header glass-panel" style="position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gradient-cyan);"></div>
+        <h1 id="gallery-title" style="font-size: 2.4rem; margin-bottom: 0.4rem; background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Galeri Event</h1>
+        <p id="gallery-date" style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Tanggal: -</p>
+
+        <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="/" class="btn-primary" style="padding: 0.75rem 1.75rem; font-size: 0.92rem;">📸 Ambil Foto Baru</a>
+          <button id="btn-download-all" class="btn-secondary" style="padding: 0.75rem 1.75rem; font-size: 0.92rem;">📦 Unduh Semua (ZIP)</button>
+        </div>
+      </div>
+
+      <!-- Share Banner -->
+      <div id="share-banner" class="glass-panel" style="display: none; padding: 1.1rem 1.75rem; margin-bottom: 1.75rem; align-items: center; justify-content: space-between; border-color: rgba(108, 99, 255, 0.35); background: rgba(108, 99, 255, 0.08);">
+        <div style="display: flex; align-items: center; gap: 12px; text-align: left;">
+          <span style="font-size: 1.6rem; animation: pulse 1s infinite alternate; display: inline-block;">✨</span>
+          <div>
+            <h4 style="color: var(--text-primary); margin: 0 0 3px 0; font-size: 1rem;">Menampilkan Foto Dibagikan</h4>
+            <p style="color: var(--text-secondary); margin: 0; font-size: 0.85rem; line-height: 1.4;">Anda melihat koleksi foto khusus.</p>
+          </div>
+        </div>
+        <button id="btn-clear-share" class="btn-secondary" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; flex-shrink: 0;">Lihat Semua</button>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div id="gallery-grid" class="gallery-grid"></div>
+
+      <!-- Empty State -->
+      <div id="gallery-empty-message" style="display: none; text-align: center; padding: 4rem 2rem; color: var(--text-secondary); font-size: 1.1rem;" class="glass-panel">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">📷</div>
+        <p>Belum ada foto di event ini. Jadilah yang pertama berfoto!</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+      <button id="lightbox-close" class="lightbox-close">&times;</button>
+
+      <div class="lightbox-left">
+        <img id="lightbox-img" class="lightbox-img" src="" alt="View Foto">
+      </div>
+
+      <div class="lightbox-right">
+        <h3 class="lightbox-title">Bagikan Foto ✨</h3>
+        <p class="lightbox-desc">Pilih metode untuk mengunduh atau membagikan foto ke perangkat Anda.</p>
+
+        <div class="lightbox-buttons">
+          <a id="lightbox-download" href="#" download class="btn-primary lightbox-btn" style="box-shadow: none;">💾 Unduh Foto</a>
+          <button id="lightbox-share-wa" class="btn-secondary lightbox-btn" style="border-color: rgba(37, 211, 102, 0.4); color: #25d366;">💬 WhatsApp</button>
+          <button id="lightbox-share-link" class="btn-secondary lightbox-btn">🔗 Salin Tautan</button>
+          <button id="lightbox-share-qr" class="btn-secondary lightbox-btn" style="border-color: rgba(76, 201, 240, 0.35); color: var(--accent-cyan);">📱 QR Code</button>
+          <button id="lightbox-print" class="btn-secondary lightbox-btn" style="border-color: rgba(248, 183, 57, 0.4); color: var(--accent-gold);">🖨️ Cetak Foto 4R</button>
+        </div>
+
+        <div id="lightbox-qr-container" class="lightbox-qr-container">
+          <img id="lightbox-qr-img" src="" alt="QR Code" class="lightbox-qr-img">
+          <p class="lightbox-qr-text">Pindai QR untuk mengunduh di HP</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Multi-Select Share Bar -->
+  <div id="floating-share-bar" class="glass-panel" style="display: none; position: fixed; bottom: -130px; left: 50%; transform: translateX(-50%); width: calc(100% - 2.5rem); max-width: 900px; z-index: 999; padding: 1.1rem 1.75rem; align-items: center; justify-content: space-between; border-color: rgba(76, 201, 240, 0.3); background: rgba(10, 11, 20, 0.95); transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -4px 30px rgba(76, 201, 240, 0.12);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="background: var(--accent-cyan); width: 10px; height: 10px; border-radius: 50%; animation: blink 1.5s infinite; flex-shrink: 0;"></div>
+      <span id="selection-count" style="font-weight: 700; font-size: 1rem; font-family: 'Outfit', sans-serif; color: var(--text-primary);">0 foto ditandai</span>
+    </div>
+    <div class="floating-actions" style="display: flex; gap: 7px; flex-wrap: wrap;">
+      <button id="floating-download" class="btn-primary" style="padding: 0.6rem 1.25rem; font-size: 0.87rem; border-radius: var(--border-radius-md); box-shadow: none;">📥 Unduh</button>
+      <button id="floating-share-wa" class="btn-secondary" style="padding: 0.6rem 1.25rem; font-size: 0.87rem; border-radius: var(--border-radius-md); border-color: rgba(37, 211, 102, 0.3); color: #25d366;">💬 WA</button>
+      <button id="floating-share-link" class="btn-secondary" style="padding: 0.6rem 1.25rem; font-size: 0.87rem; border-radius: var(--border-radius-md);">🔗 Link</button>
+      <button id="floating-share-qr" class="btn-secondary" style="padding: 0.6rem 1.25rem; font-size: 0.87rem; border-radius: var(--border-radius-md); border-color: rgba(76, 201, 240, 0.3); color: var(--accent-cyan);">📱 QR</button>
+      <button id="floating-cancel" class="btn-secondary" style="padding: 0.6rem 1.25rem; font-size: 0.87rem; border-radius: var(--border-radius-md); border-color: rgba(239, 68, 68, 0.3); color: #ef4444;">✕ Batal</button>
+    </div>
+  </div>
+
+  <!-- Share Multi QR Code Modal -->
+  <div id="share-qr-modal" class="lightbox" style="z-index: 1001;">
+    <div class="lightbox-content" style="display: flex !important; flex-direction: column !important; align-items: center !important; gap: 1rem; background: rgba(10, 11, 20, 0.95); padding: 2.5rem; border-radius: var(--border-radius-xl); max-width: 400px; width: 90%; text-align: center; box-shadow: var(--shadow-lg);">
+      <button id="share-qr-close" class="lightbox-close" style="top: 1rem; right: 1rem;">&times;</button>
+      <h3 style="font-size: 1.5rem; background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Barcode Unduh Foto</h3>
+      <p style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6;">Pindai QR Code dengan kamera HP untuk membuka dan mengunduh foto yang ditandai.</p>
+      <div style="background: white; padding: 1.25rem; border-radius: var(--border-radius-lg); display: inline-block; box-shadow: var(--shadow-md);">
+        <img id="share-qr-img" src="" alt="QR Code" style="width: 190px; height: 190px; display: block;">
+      </div>
+      <button id="share-qr-ok" class="btn-primary" style="padding: 0.75rem 2rem; font-size: 0.92rem; width: 100%; border-radius: var(--border-radius-md);">Tutup</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2026 Difotoinaja &mdash; Didukung oleh Antigravity.
+  </footer>
+
+  <script src="/theme.js?v=2.8.8"></script>
+  <script src="/gallery.js?v=2.8.8"></script>
+</body>
+</html>

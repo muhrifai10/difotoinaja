@@ -1,0 +1,270 @@
+[
+  {
+    "id": "classic_strip_3",
+    "name": "Classic 3-Photo Strip",
+    "layoutType": "strip_3",
+    "width": 1205,
+    "height": 1795,
+    "overlayUrl": "/templates/classic_strip_3.svg",
+    "frameLayering": "behind",
+    "photoSlots": [
+      {
+        "x": 100,
+        "y": 79,
+        "width": 1004,
+        "height": 373
+      },
+      {
+        "x": 100,
+        "y": 503,
+        "width": 1004,
+        "height": 373
+      },
+      {
+        "x": 100,
+        "y": 926,
+        "width": 1004,
+        "height": 373
+      }
+    ],
+    "category": "ceria"
+  },
+  {
+    "id": "template_1781011613235",
+    "name": "sa",
+    "layoutType": "strip_3",
+    "width": 1200,
+    "height": 1600,
+    "overlayUrl": "/templates/template_1781011613230.png",
+    "photoSlots": [
+      {
+        "x": 96,
+        "y": 80,
+        "width": 1008,
+        "height": 352
+      },
+      {
+        "x": 96,
+        "y": 480,
+        "width": 1008,
+        "height": 352
+      },
+      {
+        "x": 96,
+        "y": 880,
+        "width": 1008,
+        "height": 352
+      }
+    ],
+    "category": "ceria"
+  },
+  {
+    "id": "template_1781016680595",
+    "name": "sa",
+    "layoutType": "grid_2x2",
+    "width": 1205,
+    "height": 1795,
+    "overlayUrl": "/templates/template_1781016680584.png",
+    "photoSlots": [
+      {
+        "x": 50,
+        "y": 50,
+        "width": 527.5,
+        "height": 797.5
+      },
+      {
+        "x": 627.5,
+        "y": 50,
+        "width": 527.5,
+        "height": 797.5
+      },
+      {
+        "x": 50,
+        "y": 947.5,
+        "width": 527.5,
+        "height": 797.5
+      },
+      {
+        "x": 627.5,
+        "y": 947.5,
+        "width": 527.5,
+        "height": 797.5
+      }
+    ],
+    "category": "bestie"
+  },
+  {
+    "id": "template_1781017833040",
+    "name": "Fram",
+    "layoutType": "strip_3",
+    "width": 1205,
+    "height": 1795,
+    "overlayUrl": "/templates/template_1781017832917.png",
+    "photoSlots": [
+      {
+        "x": 49,
+        "y": 320,
+        "width": 516,
+        "height": 407
+      },
+      {
+        "x": 45,
+        "y": 727,
+        "width": 520,
+        "height": 399
+      },
+      {
+        "x": 45,
+        "y": 1130,
+        "width": 516,
+        "height": 399
+      },
+      {
+        "x": 644,
+        "y": 346,
+        "width": 523,
+        "height": 380
+      },
+      {
+        "x": 644,
+        "y": 727,
+        "width": 520,
+        "height": 399
+      },
+      {
+        "x": 648,
+        "y": 1122,
+        "width": 508,
+        "height": 410
+      }
+    ],
+    "frameLayering": "front",
+    "category": "ceria"
+  },
+  {
+    "id": "template_1781018108224",
+    "name": "editing",
+    "layoutType": "strip_3",
+    "width": 1205,
+    "height": 1795,
+    "overlayUrl": "/templates/template_1781018108221.png",
+    "photoSlots": [
+      {
+        "x": 100,
+        "y": 79,
+        "width": 1004,
+        "height": 373
+      },
+      {
+        "x": 100,
+        "y": 503,
+        "width": 1004,
+        "height": 373
+      },
+      {
+        "x": 100,
+        "y": 926,
+        "width": 1004,
+        "height": 373
+      }
+    ],
+    "frameLayering": "front",
+    "category": "ceria"
+  },
+  {
+    "id": "template_1781018327816",
+    "name": "FIX",
+    "layoutType": "strip_3",
+    "width": 1205,
+    "height": 1795,
+    "overlayUrl": "/templates/template_1781018327810.png",
+    "photoSlots": [
+      {
+        "x": 38,
+        "y": 354,
+        "width": 538,
+        "height": 377
+      },
+      {
+        "x": 26,
+        "y": 723,
+        "width": 546,
+        "height": 407
+      },
+      {
+        "x": 26,
+        "y": 1118,
+        "width": 542,
+        "height": 410
+      },
+      {
+        "x": 636,
+        "y": 324,
+        "width": 542,
+        "height": 410
+      },
+      {
+        "x": 636,
+        "y": 719,
+        "width": 542,
+        "height": 410
+      },
+      {
+        "x": 633,
+        "y": 1122,
+        "width": 542,
+        "height": 410
+      }
+    ],
+    "frameLayering": "behind",
+    "category": "bestie"
+  },
+  {
+    "id": "template_1781021795532",
+    "name": "Romantis",
+    "layoutType": "strip_3",
+    "width": 1205,
+    "height": 1795,
+    "overlayUrl": "/templates/template_1781021795414.png",
+    "photoSlots": [
+      {
+        "x": 19,
+        "y": 354,
+        "width": 550,
+        "height": 373
+      },
+      {
+        "x": 0,
+        "y": 719,
+        "width": 565,
+        "height": 410
+      },
+      {
+        "x": 38,
+        "y": 1115,
+        "width": 542,
+        "height": 407
+      },
+      {
+        "x": 633,
+        "y": 324,
+        "width": 542,
+        "height": 407
+      },
+      {
+        "x": 633,
+        "y": 727,
+        "width": 542,
+        "height": 407
+      },
+      {
+        "x": 633,
+        "y": 1118,
+        "width": 542,
+        "height": 407
+      }
+    ],
+    "frameLayering": "behind",
+    "category": "romantis"
+  }
+]

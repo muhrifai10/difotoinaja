@@ -1,0 +1,17 @@
+{
+  "dslrEnabled": false,
+  "dslrHotFolder": "e:/antigravity/poto/dslr_hot_folder",
+  "googleDriveEnabled": true,
+  "googleDriveFolderId": "14mZv1cxme-e2vi_TxkTNX2vdA2s3FIq3",
+  "googleDriveClientEmail": "difotoinaja@difotoinaja.iam.gserviceaccount.com",
+  "googleDrivePrivateKey": "https://script.google.com/macros/s/AKfycbxKmuL_g3IYE_ckoTi78bhf16glMnOKoQNFmGcjHj07dtou3Yuvy6CH8ZUDbK4Du8i0zQ/exec",
+  "activeEventId": "event_1781003312952",
+  "adminPin": "100696",
+  "sessionDuration": 10,
+  "sessionLockEnabled": true,
+  "backgroundImageUrl": "",
+  "printerAutoPrint": false,
+  "printerPaperSize": "4R",
+  "printerCopies": 1,
+  "activePrinter": "EPSON L3110 Series (Copy 1)"
+}

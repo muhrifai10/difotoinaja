@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Difotoinaja — Photo Booth Profesional</title>
+  <meta name="description" content="Difotoinaja: Solusi photo booth profesional. Pilih template, ambil foto, dan dapatkan kolase instan berkualitas tinggi.">
+  <link rel="stylesheet" href="/style.css?v=2.8.8">
+</head>
+<body class="booth-body">
+
+  <!-- Layar Kunci PIN Sesi Booth -->
+  <div id="booth-lock-screen" class="lock-screen-overlay" style="display: none;">
+    <div class="lock-card glass-panel">
+      <div class="lock-logo">✨ DIFOTOIN<span style="background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AJA</span></div>
+      <h3 id="booth-lock-title">Mulai Sesi Baru 📸</h3>
+      <p id="booth-lock-desc" style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 0.88rem; line-height: 1.5;">Masukkan PIN Sesi Anda untuk memulai.</p>
+      
+      <div class="pin-display-container">
+        <input type="password" id="booth-pin-input" readonly maxlength="6" placeholder="――――――">
+      </div>
+      
+      <div class="keypad-grid">
+        <button class="booth-keypad-btn" data-val="1">1</button>
+        <button class="booth-keypad-btn" data-val="2">2</button>
+        <button class="booth-keypad-btn" data-val="3">3</button>
+        <button class="booth-keypad-btn" data-val="4">4</button>
+        <button class="booth-keypad-btn" data-val="5">5</button>
+        <button class="booth-keypad-btn" data-val="6">6</button>
+        <button class="booth-keypad-btn" data-val="7">7</button>
+        <button class="booth-keypad-btn" data-val="8">8</button>
+        <button class="booth-keypad-btn" data-val="9">9</button>
+        <button class="booth-keypad-btn delete-btn" data-val="del">⌫</button>
+        <button class="booth-keypad-btn" data-val="0">0</button>
+        <button class="booth-keypad-btn clear-btn" data-val="clear">C</button>
+      </div>
+      <button id="btn-submit-booth-pin" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1.25rem; border-radius: 14px; font-size: 0.95rem; padding: 0.8rem;">Mulai Sesi Foto 🚀</button>
+      <button id="btn-lock-fullscreen" class="btn-secondary" style="width: 100%; justify-content: center; margin-top: 0.75rem; border-radius: 14px; font-size: 0.88rem; padding: 0.6rem; gap: 6px; border-color: rgba(76, 201, 240, 0.3); color: var(--accent-cyan);">📺 Layar Penuh (Fullscreen)</button>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="glass-panel">
+    <div class="logo">
+      ✨ DIFOTOIN<span>AJA</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/" class="nav-btn active">Booth</a>
+        <a href="#" id="nav-gallery-link" class="nav-btn">Galeri</a>
+        <a href="/admin.html" class="nav-btn">Admin</a>
+        <button id="btn-fullscreen-toggle" class="nav-btn" style="border: none; background: transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Layar Penuh">📺 Fullscreen</button>
+      </div>
+      <!-- Dark / Light Toggle -->
+      <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Ganti tema">
+        <div class="theme-toggle-track">
+          <span class="theme-toggle-icon moon">🌙</span>
+          <span class="theme-toggle-icon sun">☀️</span>
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Floating Timer Sisa Sesi & Akhiri Sesi -->
+  <div id="session-timer-container" style="position: fixed; top: 5.5rem; right: 2rem; z-index: 999; display: none; flex-direction: column; align-items: flex-end; gap: 8px;">
+    <div id="session-timer-badge" class="session-timer-badge glass-panel" style="position: static; margin: 0;">
+      <span class="timer-pulse-dot"></span>
+      Sisa Sesi: <span id="session-time-display">00:00</span>
+    </div>
+    <button id="btn-end-session" class="btn-end-session">🔒 Akhiri Sesi</button>
+  </div>
+
+  <main class="container">
+
+    <!-- Wizard Steps Indicator -->
+    <div id="wizard-steps-container" class="wizard-steps-container glass-panel" style="margin-bottom: 1.5rem; padding: 0.8rem 1.5rem; border-radius: var(--border-radius-md);">
+      <div class="wizard-steps">
+        <div class="wizard-step active" id="step-indicator-1">
+          <span class="step-num">1</span>
+          <span class="step-label">Pilih Frame</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="wizard-step" id="step-indicator-2">
+          <span class="step-num">2</span>
+          <span class="step-label">Ambil Foto</span>
+        </div>
+        <div class="step-divider"></div>
+        <div class="wizard-step" id="step-indicator-3">
+          <span class="step-num">3</span>
+          <span class="step-label">Unduh Hasil</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 1: HOME SCREEN -->
+    <section id="screen-home" class="hero-section" style="padding: 0.5rem 0 1.5rem 0;">
+
+      <div class="event-selector-card glass-panel" style="max-width: 100%; width: 100%;">
+        <h2 style="margin-bottom: 1.25rem; text-align: center; font-size: 1.5rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Mulai Sesi Difotoinaja</h2>
+
+        <div style="display: flex; justify-content: center; margin-bottom: 1.75rem;">
+          <div class="active-event-display">
+            <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-cyan); font-weight: 700;">📅 Event Aktif Saat Ini</span>
+            <h3 id="active-event-name" style="font-size: 1.5rem; color: var(--text-primary); margin: 0; font-family: 'Outfit', sans-serif; font-weight: 800;">Memuat Event...</h3>
+            <span id="active-event-date" style="color: var(--text-secondary); font-size: 0.88rem;">-</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label style="text-align: center; font-weight: 700; font-size: 0.78rem; letter-spacing: 1.5px; margin-bottom: 0.75rem; color: var(--text-secondary); display: block;">PILIH TEMPLATE KOLASE UNTUK MEMULAI</label>
+          <div id="templates-category-filter" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap;">
+            <!-- Diisi dinamis oleh JS -->
+          </div>
+          <div id="templates-select-grid" class="templates-select-grid">
+            <!-- Diisi dinamis oleh JS -->
+          </div>
+          <div class="booth-nav-controls" style="display: flex; justify-content: flex-end; margin-top: 1.5rem; border-top: 1px solid var(--glass-border); padding-top: 1.25rem;">
+            <button id="btn-home-next" class="btn-primary" style="padding: 0.75rem 2.2rem; border-radius: 12px; font-size: 0.95rem; opacity: 0.5;" disabled>Lanjut ke Kamera ➔</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: BOOTH CAPTURE SCREEN -->
+    <section id="screen-booth" class="booth-layout" style="display: none;">
+
+      <!-- Sisi Kiri: Viewport Kamera -->
+      <div class="camera-panel glass-panel">
+        <div class="camera-header">
+          <h2 id="booth-event-title">Sesi Booth</h2>
+          <div id="camera-source-container">
+            <select id="camera-select" class="form-select camera-source-select"></select>
+          </div>
+        </div>
+
+        <!-- DSLR Status -->
+        <div id="dslr-status-indicator" class="dslr-indicator inactive" style="display: none;">
+          <div class="pulse-dot"></div>
+          <span id="dslr-status-text">Mode DSLR Hot Folder Non-aktif</span>
+        </div>
+
+        <!-- Camera Viewport -->
+        <div class="camera-viewport">
+          <video id="webcam-preview" class="camera-video" autoplay playsinline></video>
+          <div id="countdown-overlay" class="countdown-overlay">3</div>
+          <div id="flash-overlay" class="flash-overlay"></div>
+        </div>
+
+        <!-- Camera Controls -->
+        <div class="camera-controls">
+          <button id="btn-capture" class="btn-primary">📸 Ambil Foto</button>
+          <button id="btn-cancel-booth" class="btn-secondary">← Kembali</button>
+        </div>
+      </div>
+
+      <!-- Sisi Kanan: Panel Info -->
+      <div class="sidebar-panel glass-panel">
+        <div class="session-info">
+          <h3 id="sidebar-event-name">Event Name</h3>
+          <p id="sidebar-template-name">Template: -</p>
+        </div>
+
+        <div class="thumbs-container" style="flex-grow: 0;">
+          <div class="thumbs-title">Antrean Foto (<span id="captured-count">0</span>/<span id="required-count">3</span>)</div>
+          <div id="thumbs-grid" class="thumbs-grid"></div>
+        </div>
+
+        <!-- Preview Template Frame -->
+        <div class="template-preview-container" style="margin-top: 1rem; flex-grow: 1; display: flex; flex-direction: column; gap: 8px; min-height: 0;">
+          <div class="thumbs-title">Desain Frame Kolase</div>
+          <div class="sidebar-frame-preview-box" style="flex-grow: 1; border: 1px solid var(--glass-border); border-radius: var(--border-radius-md); background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 0.5rem; min-height: 120px;">
+            <img id="sidebar-frame-preview-img" src="" alt="Desain Frame" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--border-radius-sm); filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));">
+          </div>
+        </div>
+
+        <div id="dslr-instructions" style="display: none; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 12px; font-size: 0.83rem; color: var(--text-secondary); line-height: 1.6; border: 1px solid var(--glass-border);">
+          <strong>Petunjuk DSLR Tethered Mode:</strong><br>
+          Silakan memotret langsung dari kamera DSLR Anda. Foto akan otomatis masuk ke slot di atas.
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: RESULT SCREEN -->
+    <section id="screen-result" class="result-layout" style="display: none;">
+
+      <!-- Sisi Kiri: Preview Canvas -->
+      <div class="result-canvas-container">
+        <canvas id="collage-canvas" style="display: none;"></canvas>
+        <img id="collage-preview" class="result-canvas-preview" alt="Preview Kolase">
+      </div>
+
+      <!-- Sisi Kanan: QR Code & Aksi -->
+      <div class="result-actions-panel glass-panel">
+        <div style="text-align: center;">
+          <h1 style="font-size: 2rem; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">Sesi Selesai! 🎉</h1>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; max-width: 360px; line-height: 1.6;">
+            Pindai QR Code untuk mengunduh hasil foto ke handphone Anda secara instan.
+          </p>
+        </div>
+
+        <!-- QR Code -->
+        <div id="qr-loading" style="font-weight: 700; color: var(--accent-cyan); font-size: 0.9rem;">⏳ Mengunggah dan membuat QR Code...</div>
+        <div id="qr-result-container" style="display: none; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+          <div class="qr-container">
+            <img id="qr-image" class="qr-image" src="" alt="QR Code Link Download">
+          </div>
+          <a id="btn-download-direct" href="#" download class="btn-secondary" style="padding: 0.55rem 1.5rem; font-size: 0.88rem;">💾 Unduh Langsung (PC)</a>
+        </div>
+
+        <!-- Filter Selector -->
+        <div class="filter-selector">
+          <label style="font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary);">Pilih Filter Warna</label>
+          <div class="filter-grid">
+            <button class="filter-btn active" data-filter="none">Normal</button>
+            <button class="filter-btn" data-filter="beauty">Beauty</button>
+            <button class="filter-btn" data-filter="grayscale">B&W</button>
+            <button class="filter-btn" data-filter="sepia">Sepia</button>
+            <button class="filter-btn" data-filter="vintage">Vintage</button>
+          </div>
+        </div>
+
+        <!-- Final Navigation -->
+        <div style="display: flex; gap: 0.75rem; width: 100%; margin-bottom: 0.75rem;">
+          <button id="btn-print-result" class="btn-secondary" style="flex: 1; border-color: rgba(248, 183, 57, 0.4); color: var(--accent-gold);">🖨️ Cetak Foto (4R)</button>
+        </div>
+        <div style="display: flex; gap: 0.75rem; width: 100%;">
+          <button id="btn-done" class="btn-primary" style="flex: 1;">✨ Selesai & Mulai Baru</button>
+          <button id="btn-retake" class="btn-secondary">🔄 Ulangi</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    &copy; 2026 Difotoinaja &mdash; Didukung oleh Antigravity.
+  </footer>
+
+  <script src="/theme.js?v=2.8.8"></script>
+  <script src="/app.js?v=2.8.8"></script>
+</body>
+</html>

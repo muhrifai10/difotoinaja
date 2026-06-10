@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Difotoinaja</title>
+  <meta name="description" content="Admin panel untuk mengelola event, template frame, dan konfigurasi Difotoinaja Photo Booth.">
+  <link rel="stylesheet" href="/style.css?v=2.8.8">
+</head>
+<body>
+
+  <!-- Layar Kunci PIN Admin -->
+  <div id="admin-lock-screen" class="lock-screen-overlay" style="display: none;">
+    <div class="lock-card glass-panel">
+      <div class="lock-logo">✨ DIFOTOIN<span style="background: var(--gradient-cyan); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AJA</span></div>
+      <h3 id="lock-title" style="margin-bottom: 0.5rem; font-size: 1.2rem;">Area Terbatas</h3>
+      <p id="lock-desc" style="color: var(--text-secondary); margin-bottom: 1.25rem; font-size: 0.88rem; line-height: 1.5;">Masukkan PIN untuk membuka Dashboard Admin.</p>
+
+      <div class="pin-display-container">
+        <input type="password" id="pin-input" readonly maxlength="6" placeholder="――――――">
+      </div>
+
+      <div class="keypad-grid">
+        <button class="keypad-btn" data-val="1">1</button>
+        <button class="keypad-btn" data-val="2">2</button>
+        <button class="keypad-btn" data-val="3">3</button>
+        <button class="keypad-btn" data-val="4">4</button>
+        <button class="keypad-btn" data-val="5">5</button>
+        <button class="keypad-btn" data-val="6">6</button>
+        <button class="keypad-btn" data-val="7">7</button>
+        <button class="keypad-btn" data-val="8">8</button>
+        <button class="keypad-btn" data-val="9">9</button>
+        <button class="keypad-btn delete-btn" data-val="del">⌫</button>
+        <button class="keypad-btn" data-val="0">0</button>
+        <button class="keypad-btn clear-btn" data-val="clear">C</button>
+      </div>
+
+      <button id="btn-submit-pin" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1.25rem; font-size: 0.95rem; padding: 0.8rem; border-radius: 14px;">Masuk 🔑</button>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <nav class="glass-panel">
+    <div class="logo">
+      ✨ DIFOTOIN<span>AJA</span> <span style="font-size: 0.8rem; font-weight: 600; background: var(--glass-highlight); border: 1px solid var(--glass-border); padding: 0.15rem 0.6rem; border-radius: 50px; color: var(--text-secondary); -webkit-text-fill-color: var(--text-secondary); letter-spacing: 0.5px; margin-left: 4px; font-family: 'Plus Jakarta Sans', sans-serif;">Admin</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="/" class="nav-btn">Booth</a>
+        <a href="/gallery.html" class="nav-btn">Galeri</a>
+        <a href="/admin.html" class="nav-btn active">Admin</a>
+        <a href="#" id="btn-logout" class="nav-btn" style="color: #ef4444; border: 1px solid rgba(239,68,68,0.2); background: rgba(239,68,68,0.06);">Keluar 🔒</a>
+      </div>
+      <!-- Dark / Light Toggle -->
+      <button class="theme-toggle" id="theme-toggle-btn" aria-label="Toggle dark/light mode" title="Ganti tema">
+        <div class="theme-toggle-track">
+          <span class="theme-toggle-icon moon">🌙</span>
+          <span class="theme-toggle-icon sun">☀️</span>
+          <div class="theme-toggle-thumb"></div>
+        </div>
+      </button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="admin-grid">
+
+      <!-- Sidebar Menu -->
+      <aside class="glass-panel admin-sidebar">
+        <div style="margin-bottom: 0.75rem; padding: 0 0.5rem;">
+          <p style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted);">Menu Panel</p>
+        </div>
+        <button class="admin-tab-btn active" data-tab="tab-events">📅 Kelola Event</button>
+        <button class="admin-tab-btn" data-tab="tab-templates">🖼️ Template Frames</button>
+        <button class="admin-tab-btn" data-tab="tab-print-queue">🖨️ Antrean Cetak <span id="print-queue-badge" style="display: none; background: #ef4444; color: #fff; font-size: 0.72rem; padding: 0.1rem 0.4rem; border-radius: 50px; font-weight: 700; margin-left: 6px;">0</span></button>
+        <button class="admin-tab-btn" data-tab="tab-config">⚙️ Pengaturan</button>
+      </aside>
+
+      <!-- Content Panel -->
+      <section class="glass-panel admin-content">
+
+        <!-- TAB 1: MANAJEMEN EVENT -->
+        <div id="tab-events" class="admin-tab-content active">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <p class="section-label">📅 Manajemen</p>
+              <h2 style="margin-top: 0.25rem;">Daftar Event</h2>
+            </div>
+            <button id="btn-show-add-event" class="btn-primary" style="padding: 0.6rem 1.4rem; font-size: 0.9rem;">+ Tambah Event</button>
+          </div>
+
+          <!-- Form Add Event -->
+          <div id="add-event-card" class="glass-panel" style="display: none; padding: 1.75rem; margin-bottom: 2rem; border-color: rgba(108, 99, 255, 0.3); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gradient-primary);"></div>
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Buat Event Baru</h3>
+            <form id="form-create-event">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label for="event-name">Nama Event</label>
+                  <input type="text" id="event-name" class="form-input" placeholder="Contoh: Pernikahan Andi & Budi" required>
+                </div>
+                <div class="form-group">
+                  <label for="event-slug">Slug / Kode URL</label>
+                  <input type="text" id="event-slug" class="form-input" placeholder="Contoh: andibudi-wedding" required>
+                  <small style="color: var(--text-muted); font-size: 0.78rem;">Huruf, angka, tanda hubung (-) tanpa spasi.</small>
+                </div>
+                <div class="form-group">
+                  <label for="event-date">Tanggal Event</label>
+                  <input type="date" id="event-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label for="event-template">Template Frame</label>
+                  <select id="event-template" class="form-select" required>
+                    <!-- Template list will load here -->
+                  </select>
+                </div>
+              </div>
+              <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+                <button type="submit" class="btn-primary" style="padding: 0.7rem 1.75rem;">💾 Simpan Event</button>
+                <button type="button" id="btn-cancel-add-event" class="btn-secondary" style="padding: 0.7rem 1.75rem;">Batalkan</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Events Table -->
+          <div style="overflow-x: auto;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Nama Event</th>
+                  <th>Kode Slug</th>
+                  <th>Tanggal</th>
+                  <th>Template</th>
+                  <th>Status Booth</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="events-table-body">
+                <!-- Loaded dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: MANAJEMEN TEMPLATE -->
+        <div id="tab-templates" class="admin-tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <p class="section-label">🖼️ Manajemen</p>
+              <h2 style="margin-top: 0.25rem;">Template Frame Kolase</h2>
+            </div>
+            <button id="btn-show-add-template" class="btn-primary" style="padding: 0.6rem 1.4rem; font-size: 0.9rem;">+ Unggah Template</button>
+          </div>
+
+          <!-- Form Add Template -->
+          <div id="add-template-card" class="glass-panel" style="display: none; padding: 1.75rem; margin-bottom: 2rem; border-color: rgba(108, 99, 255, 0.3); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--gradient-primary);"></div>
+            <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Unggah Template Kolase</h3>
+            <form id="form-upload-template" enctype="multipart/form-data">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label for="template-name">Nama Template</label>
+                  <input type="text" id="template-name" class="form-input" placeholder="Contoh: Template Retro Gold" required>
+                </div>
+                <div class="form-group">
+                  <label for="template-layout">Jenis Layout Kolase</label>
+                  <select id="template-layout" class="form-select" required>
+                    <option value="strip_3">Klasik Strip 3 Foto (Vertical)</option>
+                    <option value="grid_2x2">Grid 2x2 (4 Foto)</option>
+                    <option value="single">Single Photo Frame (1 Foto)</option>
+                    <option value="custom">Custom Layout (Koordinat Manual)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="template-file">File Gambar Overlay (PNG/SVG Transparan)</label>
+                  <input type="file" id="template-file" accept="image/png, image/svg+xml" class="form-input" style="padding: 0.65rem;" required>
+                  <small style="color: var(--text-muted); font-size: 0.78rem;">Background transparan agar foto terlihat melalui frame.</small>
+                </div>
+                <div class="form-group">
+                  <label>Dimensi Canvas</label>
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="number" id="template-width" class="form-input" value="1205" placeholder="Lebar" required>
+                    <span style="color: var(--text-muted); font-weight: 700; flex-shrink: 0;">×</span>
+                    <input type="number" id="template-height" class="form-input" value="1795" placeholder="Tinggi" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="template-layering">Susunan Foto & Frame</label>
+                  <select id="template-layering" class="form-select" required>
+                    <option value="behind">Foto di Belakang Frame (Default — Frame Berlubang)</option>
+                    <option value="front">Foto di Depan Frame (Frame Menjadi Background)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="template-category-select">Kategori Template</label>
+                  <select id="template-category-select" class="form-select" required>
+                    <option value="ceria">🎉 Ceria</option>
+                    <option value="romantis">💕 Romantis</option>
+                    <option value="keluarga">👨‍👩‍👧‍👦 Keluarga</option>
+                    <option value="teman">🤝 Teman</option>
+                    <option value="bestie">💫 Bestie</option>
+                    <option value="__custom__">+ Tambah Kategori Baru...</option>
+                  </select>
+                </div>
+                <div class="form-group" id="custom-category-group" style="display: none;">
+                  <label for="template-category-custom">Nama Kategori Baru</label>
+                  <input type="text" id="template-category-custom" class="form-input" placeholder="Contoh: Vintage / Retro">
+                </div>
+              </div>
+
+              <!-- Slot Editor -->
+              <div id="slots-editor-section" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border);">
+
+                <div id="visual-editor-container" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem;">
+                  <label style="font-weight: 700; font-size: 0.9rem; color: var(--text-primary);">Visual Editor: Geser & Tarik Kotak Foto</label>
+                  <div style="display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap;">
+                    <div id="visual-editor-canvas-wrapper" class="glass-panel" style="position: relative; width: 320px; height: 480px; background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); overflow: hidden; display: flex; justify-content: center; align-items: center; border-radius: 16px;">
+                      <div id="visual-editor-workspace" style="position: relative; width: 100%; height: 100%;">
+                        <img id="visual-editor-overlay-img" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; pointer-events: none; display: none; z-index: 1;">
+                      </div>
+                    </div>
+
+                    <div style="flex: 1; min-width: 240px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; background: rgba(108, 99, 255, 0.05); border: 1px solid rgba(108, 99, 255, 0.15); border-radius: 14px; padding: 1.25rem;">
+                      💡 <strong style="color: var(--text-primary);">Cara Menggunakan Visual Editor:</strong><br>
+                      1. Pilih file gambar template terlebih dahulu.<br>
+                      2. <strong>Geser (Move):</strong> Klik dan seret kotak biru.<br>
+                      3. <strong>Resize:</strong> Tarik lingkaran putih di sudut kanan bawah.<br>
+                      4. Koordinat akan ter-update otomatis saat Anda menggeser!
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-top: 1px solid var(--glass-border); padding-top: 1.25rem; flex-wrap: wrap; gap: 8px;">
+                  <h4 style="color: var(--text-primary); margin: 0; font-size: 0.95rem;">Koordinat Slot Foto</h4>
+                  <div style="display: flex; gap: 7px;">
+                    <button type="button" id="btn-copy-slot" class="btn-secondary" style="padding: 0.38rem 0.9rem; font-size: 0.82rem; border-color: rgba(76, 201, 240, 0.3); color: var(--accent-cyan);" disabled>📋 Copy</button>
+                    <button type="button" id="btn-paste-slot" class="btn-secondary" style="padding: 0.38rem 0.9rem; font-size: 0.82rem; border-color: rgba(108, 99, 255, 0.3); color: var(--accent-violet);" disabled>📋 Paste</button>
+                    <button type="button" id="btn-add-slot-input" class="btn-secondary" style="padding: 0.38rem 0.9rem; font-size: 0.82rem;">+ Tambah Slot</button>
+                  </div>
+                </div>
+
+                <div id="template-slots-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 1rem;">
+                  <!-- Slot input rows loaded dynamically -->
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn-primary" style="padding: 0.7rem 1.75rem;">💾 Simpan Template</button>
+                <button type="button" id="btn-cancel-add-template" class="btn-secondary" style="padding: 0.7rem 1.75rem;">Batalkan</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Template Cards Grid -->
+          <div id="templates-list-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.25rem;">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+
+        <!-- TAB 4: ANTREAN CETAK -->
+        <div id="tab-print-queue" class="admin-tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <p class="section-label">🖨️ Printer Approval</p>
+              <h2 style="margin-top: 0.25rem;">Antrean Cetak Foto</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; background: var(--glass-highlight); padding: 0.5rem 1rem; border-radius: 10px; border: 1px solid var(--glass-border);">
+                <input type="checkbox" id="toggle-local-print" style="width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent-gold);">
+                <label for="toggle-local-print" style="font-weight: 700; cursor: pointer; color: var(--text-primary);">🖨️ Cetak di Laptop Ini</label>
+              </div>
+              <button id="btn-refresh-print-queue" class="btn-secondary" style="padding: 0.6rem 1.25rem; font-size: 0.9rem; border-radius: 10px;">Segarkan 🔄</button>
+            </div>
+          </div>
+
+          <!-- Print Queue Cards Grid -->
+          <div id="print-queue-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;">
+            <!-- Loaded dynamically -->
+          </div>
+          
+          <div id="print-queue-empty" class="glass-panel" style="padding: 3rem; text-align: center; color: var(--text-muted); font-size: 0.95rem; border-radius: 16px; margin-top: 1rem;">
+             Tidak ada antrean cetak saat ini. 🌿
+          </div>
+        </div>
+
+        <!-- TAB 3: PENGATURAN -->
+        <div id="tab-config" class="admin-tab-content">
+          <div style="margin-bottom: 2rem;">
+            <p class="section-label">⚙️ Konfigurasi</p>
+            <h2 style="margin-top: 0.25rem;">Pengaturan Perangkat & Sinkronisasi</h2>
+          </div>
+
+          <form id="form-config">
+
+            <!-- DSLR Tethering -->
+            <div class="glass-panel" style="padding: 1.75rem; margin-bottom: 1.5rem; border-left: 3px solid var(--accent-cyan);">
+              <h3 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;">📸 Koneksi Kamera DSLR (Tethering)</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+                Aktifkan pemantauan folder lokal PC untuk kamera DSLR tethered (Canon EOS Utility, Nikon Camera Control Pro, dll.).
+              </p>
+
+              <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+                <input type="checkbox" id="config-dslr-enabled" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-violet);">
+                <label for="config-dslr-enabled" style="font-weight: 700; cursor: pointer; color: var(--text-primary); font-size: 0.92rem;">Aktifkan Pemantauan Folder DSLR</label>
+              </div>
+
+              <div class="form-group" id="config-dslr-folder-group">
+                <label for="config-dslr-folder">Lokasi Folder Hot Folder di PC</label>
+                <input type="text" id="config-dslr-folder" class="form-input" placeholder="Contoh: E:\dslr_capture">
+                <small style="color: var(--text-muted); font-size: 0.78rem;">Path absolut folder penyimpanan hasil foto DSLR.</small>
+              </div>
+            </div>
+
+            <!-- Google Drive -->
+            <div class="glass-panel" style="padding: 1.75rem; margin-bottom: 1.5rem; border-left: 3px solid var(--accent-violet);">
+              <h3 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;">☁️ Integrasi Google Drive</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+                Otomatis unggah hasil kolase ke Google Drive sebagai backup cloud dan kemudahan akses.
+              </p>
+
+              <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+                <input type="checkbox" id="config-drive-enabled" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-violet);">
+                <label for="config-drive-enabled" style="font-weight: 700; cursor: pointer; color: var(--text-primary); font-size: 0.92rem;">Aktifkan Auto-upload Google Drive</label>
+              </div>
+
+              <div id="config-drive-details" style="display: none;">
+                <div class="form-group">
+                  <label for="config-drive-folder">Google Drive Folder ID</label>
+                  <input type="text" id="config-drive-folder" class="form-input" placeholder="ID Folder Drive (misal: 1aB2c3D4e5F6g...)">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.75rem;">
+                  <div class="form-group">
+                    <label for="config-drive-email">Client Email (Service Account)</label>
+                    <input type="email" id="config-drive-email" class="form-input" placeholder="xxx@project.iam.gserviceaccount.com">
+                  </div>
+                  <div class="form-group">
+                    <label for="config-drive-key">Private Key (JSON Key)</label>
+                    <input type="password" id="config-drive-key" class="form-input" placeholder="-----BEGIN PRIVATE KEY-----">
+                  </div>
+                </div>
+            </div>
+
+            <!-- Batasan Waktu Sesi Kiosk -->
+            <div class="glass-panel" style="padding: 1.75rem; margin-bottom: 1.5rem; border-left: 3px solid var(--accent-pink);">
+              <h3 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;">⏱️ Batasan Waktu Sesi Kiosk</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+                Atur apakah halaman depan kiosk membutuhkan PIN sekali pakai untuk memulai sesi, serta durasi aktif per sesi foto.
+              </p>
+              <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+                <input type="checkbox" id="config-session-lock-enabled" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-pink);">
+                <label for="config-session-lock-enabled" style="font-weight: 700; cursor: pointer; color: var(--text-primary); font-size: 0.92rem;">Aktifkan Layar Kunci PIN Sesi</label>
+              </div>
+              <div class="form-group" id="config-session-duration-group">
+                <label for="config-session-duration">Durasi Sesi Foto (Menit)</label>
+                <input type="number" id="config-session-duration" class="form-input" min="1" max="180" placeholder="Contoh: 5">
+                <small style="color: var(--text-muted); font-size: 0.78rem;">Sesi foto otomatis terkunci kembali setelah waktu ini habis.</small>
+              </div>
+            </div>
+
+            <!-- Gambar Background Kiosk -->
+            <div class="glass-panel" style="padding: 1.75rem; margin-bottom: 1.5rem; border-left: 3px solid var(--accent-cyan);">
+              <h3 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;">🖼️ Gambar Latar Belakang Kiosk</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+                Unggah gambar latar belakang kustom untuk halaman depan kiosk booth.
+              </p>
+              
+              <div style="display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+                <div id="bg-preview-container" class="glass-panel" style="width: 120px; height: 80px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25); overflow: hidden; border-radius: 12px; border: 1px solid var(--glass-border);">
+                  <span id="bg-preview-placeholder" style="font-size: 0.75rem; color: var(--text-muted);">Default</span>
+                  <img id="bg-preview-img" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                </div>
+                
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                  <input type="file" id="input-bg-file" accept="image/*" style="display: none;">
+                  <button type="button" id="btn-select-bg" class="btn-secondary" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; border-radius: 10px;">Pilih Gambar 📂</button>
+                  <button type="button" id="btn-reset-bg" class="btn-secondary" style="padding: 0.55rem 1.25rem; font-size: 0.85rem; display: none; border-color: rgba(239, 68, 68, 0.3); color: #ef4444; border-radius: 10px;">Reset Default 🔄</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pengaturan Printer -->
+            <div class="glass-panel" style="padding: 1.75rem; margin-bottom: 1.5rem; border-left: 3px solid var(--accent-gold);">
+              <h3 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;">🖨️ Konfigurasi Printer (Cetak 4R)</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+                Konfigurasikan perilaku pencetakan foto hasil kolase 4R borderless.
+              </p>
+
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label for="config-printer-active">Printer Aktif / Ready</label>
+                <select id="config-printer-active" class="form-select">
+                  <option value="">-- Memuat daftar printer... --</option>
+                </select>
+                <small style="color: var(--text-muted); font-size: 0.78rem;">Pilih printer default untuk cetak foto otomatis/manual.</small>
+              </div>
+
+              <div class="form-group" style="flex-direction: row; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+                <input type="checkbox" id="config-printer-auto-print" style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-gold);">
+                <label for="config-printer-auto-print" style="font-weight: 700; cursor: pointer; color: var(--text-primary); font-size: 0.92rem;">Cetak Otomatis Saat Sesi Selesai</label>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label for="config-printer-paper-size">Ukuran Kertas</label>
+                  <select id="config-printer-paper-size" class="form-select">
+                    <option value="4R">4R (4 x 6 in / 102 x 152 mm)</option>
+                    <option value="A6">A6 (105 x 148 mm)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="config-printer-copies">Jumlah Salinan Default (Copies)</label>
+                  <input type="number" id="config-printer-copies" class="form-input" min="1" max="10" placeholder="1">
+                </div>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="padding: 0.8rem 2.5rem;">💾 Simpan Pengaturan</button>
+          </form>
+
+          <!-- PIN Security Section -->
+          <div class="glass-panel" style="padding: 1.75rem; margin-top: 1.5rem; border-left: 3px solid var(--accent-gold);">
+            <h3 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;">🔒 Pengaturan PIN Keamanan</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+              Ubah atau buat PIN untuk melindungi akses Dashboard Admin (4–6 digit angka).
+            </p>
+            <form id="form-change-pin" style="display: flex; flex-direction: column; gap: 1rem;">
+              <div class="form-group" id="group-old-pin">
+                <label for="old-pin">PIN Lama</label>
+                <input type="password" id="old-pin" class="form-input" placeholder="Masukkan PIN saat ini" maxlength="6" pattern="\d{4,6}">
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                  <label for="new-pin">PIN Baru (4–6 Angka)</label>
+                  <input type="password" id="new-pin" class="form-input" placeholder="Masukkan PIN baru" maxlength="6" pattern="\d{4,6}" required>
+                </div>
+                <div class="form-group">
+                  <label for="confirm-new-pin">Konfirmasi PIN Baru</label>
+                  <input type="password" id="confirm-new-pin" class="form-input" placeholder="Ulangi PIN baru" maxlength="6" pattern="\d{4,6}" required>
+                </div>
+              </div>
+              <button type="submit" class="btn-primary" style="padding: 0.75rem 2rem; align-self: flex-start; border-radius: 12px;">🔑 Simpan PIN Baru</button>
+            </form>
+          </div>
+
+          <!-- Generator PIN Sesi Foto -->
+          <div class="glass-panel" style="padding: 1.75rem; margin-top: 1.5rem; border-left: 3px solid var(--accent-cyan);">
+            <h3 style="margin-bottom: 0.75rem; display: flex; align-items: center; gap: 10px; font-size: 1.05rem;">🎫 Generator PIN Sesi Foto</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.5rem; line-height: 1.6;">
+              Buat PIN sekali pakai untuk dibagikan kepada pelanggan agar mereka dapat mengaktifkan mesin kiosk photobooth.
+            </p>
+            
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+              <button type="button" id="btn-generate-session-pin" class="btn-primary" style="padding: 0.7rem 1.75rem;">⚡ Buat PIN Sesi Baru</button>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="text" id="custom-session-pin" class="form-input" style="width: 150px; margin: 0; padding: 0.55rem;" placeholder="PIN Kustom" maxlength="6" pattern="\d{4,6}">
+                <button type="button" id="btn-add-custom-session-pin" class="btn-secondary" style="padding: 0.6rem 1.25rem;">+ Tambah</button>
+              </div>
+            </div>
+
+            <h4 style="margin-bottom: 0.75rem; font-size: 0.95rem; color: var(--text-primary);">Daftar PIN Sesi Aktif (Belum Digunakan)</h4>
+            <div style="overflow-x: auto; max-height: 250px; overflow-y: auto; border: 1px solid var(--glass-border); border-radius: 12px; background: rgba(0,0,0,0.15);">
+              <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem;">
+                <thead>
+                  <tr style="border-bottom: 1px solid var(--glass-border); background: rgba(255,255,255,0.02);">
+                    <th style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-secondary);">Kode PIN Sesi</th>
+                    <th style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-secondary);">Tanggal Dibuat</th>
+                    <th style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-secondary);">Status</th>
+                    <th style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-secondary); text-align: center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="session-pins-table-body">
+                  <!-- Load dinamis -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2026 Difotoinaja &mdash; Didukung oleh Antigravity.
+  </footer>
+
+  <script src="/theme.js?v=2.8.8"></script>
+  <script src="/admin.js?v=2.8.8"></script>
+</body>
+</html>

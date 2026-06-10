@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 1800" width="600" height="1800">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141517" />
+      <stop offset="100%" stop-color="#22252a" />
+    </linearGradient>
+    
+    <!-- Rose Gold Frame Gradient -->
+    <linearGradient id="roseGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b88773" />
+      <stop offset="50%" stop-color="#e2b4a3" />
+      <stop offset="100%" stop-color="#b88773" />
+    </linearGradient>
+  </defs>
+
+  <!-- Solid Background with Holes Cut Out using EvenOdd fill rule -->
+  <!-- Outer Rect: M0,0 H600 V1800 H0 Z -->
+  <!-- Inner Slot 1: M50,80 H550 V455 H50 Z -->
+  <!-- Inner Slot 2: M50,505 H550 V880 H50 Z -->
+  <!-- Inner Slot 3: M50,930 H550 V1305 H50 Z -->
+  <path d="M 0 0 h 600 v 1800 h -600 z 
+           M 50 80 h 500 v 375 h -500 z 
+           M 50 505 h 500 v 375 h -500 z 
+           M 50 930 h 500 v 375 h -500 z" 
+        fill="url(#bgGrad)" 
+        fill-rule="evenodd" />
+
+  <!-- Borders around the Photo Slots -->
+  <rect x="48" y="78" width="504" height="379" rx="8" fill="none" stroke="url(#roseGold)" stroke-width="4" />
+  <rect x="48" y="503" width="504" height="379" rx="8" fill="none" stroke="url(#roseGold)" stroke-width="4" />
+  <rect x="48" y="928" width="504" height="379" rx="8" fill="none" stroke="url(#roseGold)" stroke-width="4" />
+
+  <!-- Branding/Decorative Elements at the bottom -->
+  <g transform="translate(300, 1500)" text-anchor="middle">
+    <!-- Star Icons -->
+    <path d="M 0 -70 L 4 -50 L 24 -50 L 8 -38 L 14 -18 L 0 -30 L -14 -18 L -8 -38 L -24 -50 L -4 -50 Z" fill="url(#roseGold)" />
+    
+    <!-- Title Text -->
+    <text y="-5" font-family="'Outfit', 'Inter', sans-serif" font-weight="800" font-size="36" fill="url(#roseGold)" letter-spacing="4">SWEET MEMORIES</text>
+    
+    <!-- Subtitle Text -->
+    <text y="35" font-family="'Inter', sans-serif" font-weight="300" font-size="18" fill="#a0a5b0" letter-spacing="6">OUR PHOTOBOOTH</text>
+    
+    <!-- Frame Decoration Line -->
+    <line x1="-120" y1="70" x2="120" y2="70" stroke="url(#roseGold)" stroke-width="2" stroke-dasharray="10 5" />
+  </g>
+</svg>
