@@ -444,6 +444,13 @@ function switchScreen(targetScreen) {
   });
   targetScreen.style.display = targetScreen === screenBooth ? 'grid' : (targetScreen === screenResult ? 'grid' : 'flex');
 
+  // Toggle scrolling lock class on body if we are on the booth capture screen
+  if (targetScreen === screenBooth) {
+    document.body.classList.add('lock-scroll');
+  } else {
+    document.body.classList.remove('lock-scroll');
+  }
+
   // Update wizard steps based on target screen
   if (targetScreen === screenHome) {
     updateWizardSteps(1);

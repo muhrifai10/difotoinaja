@@ -2556,4 +2556,134 @@ footer {
   }
 }
 
+/* ===== LOCK SCROLL STATE FOR BOOTH CAPTURE SCREEN ===== */
+/* Locks the screen to exactly 1 viewport, maximizes the webcam preview, and compacts the sidebar */
+body.lock-scroll {
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+body.lock-scroll .container {
+  height: calc(100vh - 4.5rem) !important;
+  max-height: calc(100vh - 4.5rem) !important;
+  overflow: hidden !important;
+  margin-top: 4rem !important;
+  margin-bottom: 0.5rem !important;
+  padding: 0 1rem !important;
+  flex: 1 1 auto !important;
+}
+
+body.lock-scroll .wizard-steps-container {
+  margin-bottom: 0.75rem !important;
+  padding: 0.5rem 1rem !important;
+}
+
+body.lock-scroll .booth-layout {
+  height: calc(100% - 50px) !important;
+  margin-top: 0 !important;
+  display: grid !important;
+  grid-template-columns: 1.55fr 0.45fr !important; /* Larger camera, compact sidebar */
+  gap: 1rem !important;
+  overflow: hidden !important;
+}
+
+body.lock-scroll .camera-panel {
+  padding: 0.75rem !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+body.lock-scroll .camera-header {
+  margin-bottom: 0.5rem !important;
+}
+
+body.lock-scroll .camera-header h2 {
+  font-size: 1.1rem !important;
+}
+
+body.lock-scroll .camera-source-select {
+  font-size: 0.8rem !important;
+  padding: 0.35rem 0.6rem !important;
+}
+
+body.lock-scroll .camera-viewport {
+  width: auto !important;
+  height: 100% !important;
+  max-height: calc(100% - 90px) !important;
+  aspect-ratio: 4/3 !important;
+  margin: auto !important;
+}
+
+body.lock-scroll .camera-controls {
+  margin-top: 0.5rem !important;
+}
+
+body.lock-scroll .camera-controls button {
+  padding: 0.55rem 1.25rem !important;
+  font-size: 0.85rem !important;
+}
+
+/* Sidebar Panel Adjustments */
+body.lock-scroll .sidebar-panel {
+  padding: 0.75rem !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  justify-content: flex-start !important;
+}
+
+body.lock-scroll .session-info {
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 0 !important;
+}
+
+body.lock-scroll .session-info h3 {
+  font-size: 1.05rem !important;
+  margin-bottom: 0.2rem !important;
+}
+
+body.lock-scroll .session-info p {
+  font-size: 0.8rem !important;
+}
+
+body.lock-scroll .thumbs-container {
+  gap: 6px !important;
+  flex-grow: 0 !important;
+}
+
+body.lock-scroll .thumbs-title {
+  font-size: 0.72rem !important;
+  letter-spacing: 0.8px !important;
+}
+
+body.lock-scroll .thumbs-grid {
+  gap: 6px !important;
+}
+
+body.lock-scroll .thumb-slot {
+  font-size: 0.85rem !important;
+  border-width: 1.5px !important;
+}
+
+body.lock-scroll .template-preview-container {
+  margin-top: 0 !important;
+  flex-grow: 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+body.lock-scroll .sidebar-frame-preview-box {
+  min-height: auto !important;
+  height: 100% !important;
+  max-height: 200px !important;
+}
+
+
 
