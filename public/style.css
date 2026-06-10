@@ -2048,3 +2048,87 @@ footer {
   transform: none !important;
 }
 
+/* ===== MOBILE SCROLL FIX ===== */
+@media (max-width: 968px) {
+  body.booth-body,
+  body.gallery-body {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    overflow: auto !important;
+  }
+
+  body.booth-body .container,
+  body.gallery-body .container {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body #screen-home,
+  body.booth-body #screen-booth,
+  body.booth-body #screen-result {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .event-selector-card {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .booth-layout {
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.25rem !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .camera-panel,
+  body.booth-body .sidebar-panel {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .camera-viewport {
+    max-height: none !important;
+  }
+
+  body.booth-body .sidebar-frame-preview-box {
+    min-height: auto !important;
+  }
+
+  body.booth-body .result-layout {
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    overflow: visible !important;
+  }
+
+  body.booth-body .result-canvas-preview {
+    max-height: none !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  body.booth-body .result-actions-panel {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body.gallery-body #gallery-select-section,
+  body.gallery-body #gallery-content-section {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body.gallery-body .gallery-grid {
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+}
+
